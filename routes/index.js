@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
 router.post('/parse/link',async (req, res) => {
 	try {
 		const { url } = req.body;
+		// adds args for puppeteer
 		const previewData = await linkPreviewGenerator(url, [
 			'--no-sandbox',
 			'--disable-setuid-sandbox'
