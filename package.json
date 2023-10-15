@@ -1,21 +1,22 @@
 {
-  "name": "link-preview-data-generator",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
-  "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "cors": "^2.8.5",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "helmet": "^3.22.0",
-    "link-preview-generator": "0.0.4",
-    "morgan": "~1.9.1"
-  },
-  "engines": {
-    "npm": ">=8.0.0 <9.0.0",
-    "node": ">=16.0.0 <17.0.0"
-  }
+	"name": "link-preview-data-generator",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "node ./bin/www"
+	},
+	"dependencies": {
+		"cookie-parser": "~1.4.4",
+		"cors": "^2.8.5",
+		"debug": "~2.6.9",
+		"express": "~4.16.1",
+		"helmet": "^3.22.0",
+		"link-preview-generator": "0.0.4",
+		"morgan": "~1.9.1"
+	},
+	"engines": {
+		"npm": ">=8.0.0",
+		"node": ">=16.0.0"
+	},
+	"license": "MIT"
 }
