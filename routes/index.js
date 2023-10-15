@@ -21,7 +21,7 @@ router.post("/parse/link", async (req, res) => {
 	}
 });
 
-router.post("/health", async (req, res) => {
+router.get("/health", async (req, res) => {
 	try {
 		const healthcheck = {
 			uptime: `${process.uptime()} seconds`,
