@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_e83dcca1e1d24fcbbe5d7273f88e0932 }}/ashwamegh/lpdg-server:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_e83dcca1e1d24fcbbe5d7273f88e0932 }}/ashwamegh/lpdg-server:latest
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'lpdg-server'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_82f8051ff07e46d2a88e583b40d7ed5d }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_e83dcca1e1d24fcbbe5d7273f88e0932 }}/ashwamegh/lpdg-server:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_e83dcca1e1d24fcbbe5d7273f88e0932 }}/ashwamegh/lpdg-server:latest'
