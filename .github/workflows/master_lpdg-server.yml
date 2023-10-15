@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - lpdg-server
+name: Build and deploy container app to Azure Web App - lpdg-server
 
 on:
   push:
@@ -11,46 +11,41 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: 'ubuntu-latest'
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v1
-        with:
-          node-version: '18.x'
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://index.docker.io/v1/
+        username: ${{ secrets.AzureAppService_ContainerUsername_3a5390773198422594e1b1603ab31d50 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_ea8f89f4b3d245c08b4002e3acba4bcd }}
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
-        with:
-          name: node-app
-          path: .
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3a5390773198422594e1b1603ab31d50 }}/ashwamegh/lpdg-server:${{ github.sha }}
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: node-app
-
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'lpdg-server'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9C53B8B91850408A9521F93C957943CF }}
-          package: .
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'lpdg-server'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8470f3dc76914968be7c4e9d210b8409 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3a5390773198422594e1b1603ab31d50 }}/ashwamegh/lpdg-server:${{ github.sha }}'
