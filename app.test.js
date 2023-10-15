@@ -40,6 +40,20 @@ describe("Test the LPDG server", () => {
 		assert.ok("img" in data);
 	});
 
+	it("should Rate limit the request at 100", async () => {
+		const sampleRequestsCount = 120;
+		for (let i = 1; i <= sampleRequestsCount; i++) {
+			try {
+				const res = await fetch(`${url}/health`);
+				const data = await res.json();
+			} catch (error) {
+				console.log("Rate limit reached at ", i + 1);
+				assert.ok(i <= 101); // current limit is 100 requests per 15 minutes
+				break;
+			}
+		}
+	});
+
 	after(() => {
 		server.close();
 	});
